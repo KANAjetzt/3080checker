@@ -19,12 +19,27 @@ exports.handler = async function(event, context) {
   // const url = `https://www.notebooksbilliger.de/pc+hardware/grafikkarten/nvidia/geforce+rtx+3000+serie+nvidia/gigabyte+geforce+rtx+3090+vision+oc+24g+grafikkarte+685795`
   
   request(url, (error, response, html) => {
+
+    if(error){
+      return {
+        statusCode: 500,
+        body: JSON.stringify({status: "error", message: "error scraping"})
+    };
+    }
+
     if(!error & response.statusCode === 200){
       const $ = cheerio.load(html)
   
       const availability = $('.availability_widget')
       
-      sendMessage(availability.text())
+      try {
+        sendMessage(availability.text())
+      }catch(err) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({status: "error", message: "error sending discord message"})
+      };
+      }
     }
   })
 

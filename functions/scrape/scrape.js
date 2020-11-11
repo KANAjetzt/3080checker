@@ -51,7 +51,12 @@ const handler = async (event, context) => {
               body: JSON.stringify({status: "error", message: "error sending discord message"})
           };
           }
-        }       
+        } else {
+          return {
+            statusCode: 200,
+            body: JSON.stringify({status: "success", message: availability.text()})
+        };
+        }    
       }
     })
 }

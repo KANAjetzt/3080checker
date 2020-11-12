@@ -9,8 +9,7 @@ const handler = async (event, context) => {
   const checkNBB = () => {
     return new Promise((resolve, reject) => {
       
-      // const NNBUrl = 'https://www.notebooksbilliger.de/nvidia%252Bgeforce%252Brtx%252B3080%252Bfounders%252Bedition%252B683301?nbbct=1001_101248&nbb=2177fc&wt_cc8=adgoal&pid=11348_1603460418_79964a12f864b38ee6c28e1057c02b2a&awc=11348_1603460418_79964a12f864b38ee6c28e1057c02b2a'
-      const NNBUrl = 'https://www.notebooksbilliger.de/acer+nitro+5+an515+54+58u3+gaming+670095/eqsqid/b8a17f62-3d11-4f0f-8082-0aadaca17338'
+      const NNBUrl = 'https://www.notebooksbilliger.de/nvidia%252Bgeforce%252Brtx%252B3080%252Bfounders%252Bedition%252B683301?nbbct=1001_101248&nbb=2177fc&wt_cc8=adgoal&pid=11348_1603460418_79964a12f864b38ee6c28e1057c02b2a&awc=11348_1603460418_79964a12f864b38ee6c28e1057c02b2a'
 
       // ------ Check NNB ------
       request(NNBUrl, async (error, response, html) => { 
@@ -78,7 +77,7 @@ const handler = async (event, context) => {
   }
 
   return await init()  
-  
+
   }
 
 exports.handler = handler

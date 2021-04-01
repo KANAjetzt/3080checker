@@ -35,7 +35,6 @@ const handler = async (event, context) => {
   };
 
   const init = async () => {
-    // const resultNBB = await checkNBB()
     const resultNvidia = await checkNvidia();
 
     // If they are out of stock just return
@@ -44,12 +43,14 @@ const handler = async (event, context) => {
         statusCode: 200,
         body: JSON.stringify({
           action: "nothing",
-          message: { resultNBB, resultNvidia },
+          message: { resultNvidia },
         }),
       };
       // if they are available on one Page send Discord Message
     } else {
-      await sendMessage(`Nvidia: ${resultNvidia}`);
+      await sendMessage(
+        `Nvidia: ${resultNvidia} - https://shop.nvidia.com/de-de/geforce/store/gpu/?page=1&limit=9&locale=de-de&gpu=RTX%203080&category=GPU&manufacturer=NVIDIA&manufacturer_filter=NVIDIA~1,ASUS~3,EVGA~5,GIGABYTE~1,MSI~2,PNY~2,ZOTAC~1`
+      );
       return {
         statusCode: 200,
         body: JSON.stringify({

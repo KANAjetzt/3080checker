@@ -11,6 +11,8 @@ const handler = async (event, context) => {
   async function getNvidia() {
     return new Promise((resolve, reject) => {
       console.log(`NVIDIA_ENDPOINT: ${NVIDIA_ENDPOINT}`);
+      console.log(`cookie: ${cookie}`);
+
       const options = {
         method: "GET",
         url: NVIDIA_ENDPOINT,

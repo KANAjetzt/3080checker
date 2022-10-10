@@ -67,11 +67,13 @@ const handler = async (event, context) => {
   };
 
   const init = async () => {
+    console.log("getting nvidia data...");
     const resultNvidia = await getNvidia();
     console.log(`resultNvidia: ${resultNvidia}`);
 
     // If they are out of stock just return
     if (!resultNvidia) {
+      console.log("nothing in stock");
       return {
         statusCode: 200,
         body: JSON.stringify({

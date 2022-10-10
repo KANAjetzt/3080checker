@@ -6,13 +6,13 @@ const handler = async (event, context) => {
   const checkNvidia = () => {
     return new Promise((resolve, reject) => {
       const NvidiaUrl =
-        "https://api.nvidia.partners/edge/product/search?page=1&limit=9&locale=de-de&category=GPU&gpu=RTX%203080&manufacturer=NVIDIA&manufacturer_filter=NVIDIA~1,ASUS~3,EVGA~5,GAINWARD~0,GIGABYTE~1,MSI~2,PNY~2,ZOTAC~1";
+        "https://api.nvidia.partners/edge/product/search?page=1&limit=9&locale=de-de&category=GPU&gpu=RTX%203080&manufacturer=NVIDIA&manufacturer_filter=NVIDIA~1,ACER~0,ALIENWARE~0,ASUS~2,DELL~0,EVGA~0,GAINWARD~1,GIGABYTE~3,HP~0,INNO3D~1,LENOVO~0,MSI~3,PALIT~0,PNY~1,RAZER~0,ZOTAC~2";
 
       // ------ Check Nvidia ------
       request(NvidiaUrl, async (error, response, html) => {
         if (!error & (response.statusCode === 200)) {
           const body = JSON.parse(response.toJSON().body);
-          resolve(body.searchedProducts.featuredProduct.prdStatus);
+          resolve(body.searchedProducts.productDetails[0].productAvailable);
         } else {
           reject("error scraping");
         }
@@ -38,7 +38,7 @@ const handler = async (event, context) => {
     const resultNvidia = await checkNvidia();
 
     // If they are out of stock just return
-    if (resultNvidia === "out_of_stock") {
+    if (!resultNvidia) {
       return {
         statusCode: 200,
         body: JSON.stringify({

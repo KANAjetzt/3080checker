@@ -5,7 +5,7 @@ const { Client } = require("discord.js");
 const NVIDIA_ENDPOINT =
   "https://api.nvidia.partners/edge/product/search?page=1&limit=9&locale=de-de&category=GPU&gpu=RTX%203080&manufacturer=NVIDIA";
 let cookie =
-  "ak_bmsc=645A9A81B400A683E65F78258C21CA96~000000000000000000000000000000~YAAQhSV+aHqUJKmDAQAA4qDFwRHguI1X8Kj5bxjHdWElLhARlCdir4qLlhDmkS/1gHxe3uHBQ6kcFwsuxwYVQWygw5CgdDkM1vBiogKEjveVDqnvXLqqmUlACtcyMCdd4CYFuzmDS/YJ2ItUMQ/Bg8yO7oxb18eJ5hew4ReXnZ2sq3dRymlEsb4TyrP8cd2pTl6PJiN/C5eqpcjvlGPdm/VmVV9t4LRHt6J/XZD7hanDwYl5xOFbjqjFfOKcXv5tl0sd4dNUUajsY9miAIiuiU3iLU2ZB30ImipdiVrzcsXpbfQ7Uh9arI+c8g3SR65YTuOJyv6WdnNxyiOlO97MVO7PgE5p3AjnBdHTxhvbetlfyE6Ed1Rcpl+l10P4fP+OMg==; bm_sv=40054D2C255BD6B68692464FAEA62BCE~YAAQlx0QApu0sbmDAQAA27qVwRHxMcUQs1V7KE/vaeTfsiFx5wjryYZd/nCEpEU5ZC0GHG8k0ukNTOqEP4OUfUcrFk2ykOkdtrf5yjUx0DM44q+NGmT/OqBGTTwpZLkHBnQpUOWh7sHCoItnLOMxVdr+SjNxUtppsCjz4Vo99WtFtEng0/uNvruUrhdM78a4xVAXVEMZD4+vcZIDxCNhuZ5Vy3MDMybXJU8tHinAvNwofmm1s+Z3mR2rCM127KXjl9S4R04=~1";
+  "ak_bmsc=C288E712D890B61EF4C2077030CC83B9~000000000000000000000000000000~YAAQVKEkF+zuqaiDAQAATK46yBESH4fNXMWE2h/gyiPgQqO7zHFamFDhPLxYGqIbZzkY6ae4JVgBUn50vgPv26m35ex9RQPQG1PpYLso8te33/pHGdqvEddVV9uazwC1YJlz0SwAxBVCM9GhZzlfCbAgoZjC3rxWT0j+wF6VsQxN3il3HVebAww+t9H5zUvuciEhqcM+oMc44NravN8CpOCBNHF7zk6vIu5uYUuYgmcoCrd35QLc8jj6ICNEvZ5Dc2KRDzC7+WMzpWzdGjWMQXhmM0tgnOPvvjuevbWPTnfSj8scal+iEFLGmSOB/lORx3Ijabb0AyYslh1lhYJimz8xoY2GeKro3u7N1jd5Su8PBDnkAJsGX/t+z/4fH2+duw0T";
 
 const handler = async (event, context) => {
   async function getNvidia() {
@@ -36,7 +36,7 @@ const handler = async (event, context) => {
 
       request(options, function (error, response) {
         if (error) {
-          reject(error);
+          reject(error.message);
         }
 
         // Update cookie

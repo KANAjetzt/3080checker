@@ -1,11 +1,32 @@
 require("dotenv").config();
 const request = require("request");
+const fs = require("fs");
+const path = require("path");
 const { Client } = require("discord.js");
 
 const NVIDIA_ENDPOINT =
   "https://api.nvidia.partners/edge/product/search?page=1&limit=9&locale=de-de&category=GPU&gpu=RTX%203080&manufacturer=NVIDIA";
 let cookie =
-  "ak_bmsc=C288E712D890B61EF4C2077030CC83B9~000000000000000000000000000000~YAAQVKEkF+zuqaiDAQAATK46yBESH4fNXMWE2h/gyiPgQqO7zHFamFDhPLxYGqIbZzkY6ae4JVgBUn50vgPv26m35ex9RQPQG1PpYLso8te33/pHGdqvEddVV9uazwC1YJlz0SwAxBVCM9GhZzlfCbAgoZjC3rxWT0j+wF6VsQxN3il3HVebAww+t9H5zUvuciEhqcM+oMc44NravN8CpOCBNHF7zk6vIu5uYUuYgmcoCrd35QLc8jj6ICNEvZ5Dc2KRDzC7+WMzpWzdGjWMQXhmM0tgnOPvvjuevbWPTnfSj8scal+iEFLGmSOB/lORx3Ijabb0AyYslh1lhYJimz8xoY2GeKro3u7N1jd5Su8PBDnkAJsGX/t+z/4fH2+duw0T";
+  "ak_bmsc=EF3A78C02CF7D6D13AAB1B82593A0442~000000000000000000000000000000~YAAQh93dWNBC87WDAQAArWdP0BGfpq47rxZ6Nypjnt+x2vETUAxtErOWCygTEFs0vIN2+X1ye8pb8I17lzoJSk81lg7jrd97NLUBNoUuwv7te0kLJPKAIkUtFhWTwHDqG1GS/wBgGM35OphqLBGOsjkBJv6TWWHzpcNgtWdC5o1Uw53aGLTgwu1mFnxKdv3FGeGi419VImdWgJzL5tf7+nUoVk9H3wfaIT8MT7XJcyHwyDlaZOHvc/D8zx5RDbNKLRQKpJ8H/zKgHcYXnkynWHDtLm5+YNXJKuHJP63xJkqMFqcYsWXFq3IJkes78qlbx5bh3fzKEqvrepqIa+E+FlYzuxTuAq5Ajnr0QDLbZ3CyfcuQWf7oinzNONRTw7FDg/U=";
+
+const logPath = path.join(__dirname, "../log/log.txt");
+
+function handleLog(content) {
+  const time = new Date();
+
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  fs.appendFileSync(
+    logPath,
+    `${time.toLocaleDateString("de-DE", dateOptions)} ${time.toLocaleTimeString(
+      "de-DE"
+    )} - ${content} \n`
+  );
+}
 
 async function handler() {
   async function getNvidia() {
@@ -66,6 +87,7 @@ async function handler() {
 
         if (channel) {
           const messageObj = await channel.send(message);
+          client.destroy();
           resolve(messageObj.content);
         } else {
           reject("channel not found");
@@ -85,6 +107,7 @@ async function handler() {
     // If they are out of stock just return
     if (!resultNvidia) {
       console.log("nothing in stock");
+      handleLog("nothing in stock");
       return {
         statusCode: 200,
         body: JSON.stringify({
@@ -94,6 +117,7 @@ async function handler() {
       };
       // if they are available on one Page send Discord Message
     } else {
+      handleLog("something in stock!");
       await sendMessage(
         `Nvidia: ${resultNvidia} - https://shop.nvidia.com/de-de/geforce/store/gpu/?page=1&limit=9&locale=de-de&gpu=RTX%203080&category=GPU&manufacturer=NVIDIA&manufacturer_filter=NVIDIA~1,ASUS~3,EVGA~5,GIGABYTE~1,MSI~2,PNY~2,ZOTAC~1`
       );
@@ -110,4 +134,10 @@ async function handler() {
   await init();
 }
 
-handler();
+function interval() {
+  setInterval(() => {
+    handler();
+  }, 1000 * 60 * 1);
+}
+
+interval();
